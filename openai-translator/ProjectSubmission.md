@@ -4,7 +4,10 @@
 
 ### 1. Gradio图形用户界面
 启动命令： python ai_translator/gradio_frontend.py
-在UI界面上使用 Gradio. 一共有5个components：1 个File和 3个textbox,
+
+在UI界面上使用 Gradio. 
+
+一共有4个组件：1 个File和 3个textbox,
 分别接收参数 pdf files, file format, source_language 和 target_language。
 
 ![UI](homeworkimages/UI.png)
