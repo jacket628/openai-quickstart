@@ -7,24 +7,34 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from utils import ArgumentParser, LOG
 from translator import PDFTranslator, TranslationConfig
 
-
-def translation(input_file, source_language, target_language):
-    LOG.debug(f"[翻译任务]\n源文件: {input_file.name}\n源语言: {source_language}\n目标语言: {target_language}")
+def translation(input_file, source_language, target_language, translation_style):
+    LOG.debug(
+        f"[翻译任务]\n源文件: {input_file.name}\n源语言: {source_language}\n目标语言: {target_language}\n翻译风格: {translation_style}")
 
     output_file_path = Translator.translate_pdf(
-        input_file.name, source_language=source_language, target_language=target_language)
+        input_file.name,
+        output_file_format="markdown",
+        source_language=source_language,
+        target_language=target_language,
+        translation_style=translation_style)
 
     return output_file_path
 
 def launch_gradio():
+    language_options = ["English", "Chinese", "French", "German", "Spanish", "Korean", "Japanese"]
+    language_options2 = ["Chinese", "English", "French", "German", "Spanish", "Korean", "Japanese"]
+    file_format_options = ["Novels", "Press Releases", "Children's Style"]
 
     iface = gr.Interface(
         fn=translation,
         title="OpenAI-Translator v2.0(PDF 电子书翻译工具)",
         inputs=[
             gr.File(label="上传PDF文件"),
-            gr.Textbox(label="源语言（默认：英文）", placeholder="English", value="English"),
-            gr.Textbox(label="目标语言（默认：中文）", placeholder="Chinese", value="Chinese")
+            gr.Dropdown(choices=language_options, label="源语言（默认：英文）",value="English"),
+            gr.Dropdown(choices=language_options2, label="目标语言（默认：中文）",value="Chinese"),
+            gr.Dropdown(choices=file_format_options, label="翻译风格（默认：小说）",value="Novels")
+            # gr.Textbox(label="源语言（默认：英文）", placeholder="English", value="English"),
+            # gr.Textbox(label="目标语言（默认：中文）", placeholder="Chinese", value="Chinese")
         ],
         outputs=[
             gr.File(label="下载翻译文件")
